@@ -27,9 +27,12 @@ const PatientTable = ({ patients, onEdit, onDelete }) => {
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
                 Blood Group
-              </th>
+</th>
               <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
                 Status
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                Doctor
               </th>
               <th className="px-6 py-4 text-right text-xs font-semibold text-slate-700 uppercase tracking-wider">
                 Actions
@@ -73,7 +76,10 @@ const PatientTable = ({ patients, onEdit, onDelete }) => {
                 <td className="px-6 py-4 whitespace-nowrap">
 <Badge variant={patient.status_c === "Active" ? "success" : "default"}>
                     {patient.status_c}
-                  </Badge>
+</Badge>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">
+                  {patient.doctor_id_c?.Name || 'Not Assigned'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
                   <div className="flex items-center justify-end gap-2">

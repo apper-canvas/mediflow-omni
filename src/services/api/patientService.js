@@ -10,7 +10,7 @@ export const patientService = {
     try {
       const params = {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
           {"field": {"Name": "date_of_birth_c"}},
@@ -24,7 +24,8 @@ export const patientService = {
           {"field": {"Name": "emergency_phone_c"}},
           {"field": {"Name": "allergies_c"}},
           {"field": {"Name": "status_c"}},
-          {"field": {"Name": "registration_date_c"}}
+          {"field": {"Name": "registration_date_c"}},
+          {"field": {"name": "doctor_id_c"}, "referenceField": {"field": {"Name": "Name"}}}
         ]
       };
       
@@ -46,7 +47,7 @@ export const patientService = {
 
   async getById(id) {
     try {
-      const params = {
+const params = {
         fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "first_name_c"}},
@@ -60,9 +61,10 @@ export const patientService = {
           {"field": {"Name": "address_c"}},
           {"field": {"Name": "emergency_contact_c"}},
           {"field": {"Name": "emergency_phone_c"}},
-          {"field": {"Name": "allergies_c"}},
+{"field": {"Name": "allergies_c"}},
           {"field": {"Name": "status_c"}},
-          {"field": {"Name": "registration_date_c"}}
+          {"field": {"Name": "registration_date_c"}},
+          {"field": {"name": "doctor_id_c"}, "referenceField": {"field": {"Name": "Name"}}}
         ]
       };
       
@@ -85,7 +87,7 @@ export const patientService = {
   async create(patientData) {
     try {
       const params = {
-        records: [{
+records: [{
           first_name_c: patientData.first_name_c,
           last_name_c: patientData.last_name_c,
           date_of_birth_c: patientData.date_of_birth_c,
@@ -99,7 +101,8 @@ export const patientService = {
           emergency_phone_c: patientData.emergency_phone_c,
           allergies_c: Array.isArray(patientData.allergies_c) ? patientData.allergies_c.join(',') : patientData.allergies_c,
           status_c: "Active",
-          registration_date_c: new Date().toISOString().split("T")[0]
+          registration_date_c: new Date().toISOString().split("T")[0],
+          doctor_id_c: patientData.doctor_id_c ? parseInt(patientData.doctor_id_c) : undefined
         }]
       };
       
@@ -127,7 +130,7 @@ export const patientService = {
   async update(id, patientData) {
     try {
       const params = {
-        records: [{
+records: [{
           Id: parseInt(id),
           first_name_c: patientData.first_name_c,
           last_name_c: patientData.last_name_c,
@@ -140,7 +143,8 @@ export const patientService = {
           address_c: patientData.address_c,
           emergency_contact_c: patientData.emergency_contact_c,
           emergency_phone_c: patientData.emergency_phone_c,
-          allergies_c: Array.isArray(patientData.allergies_c) ? patientData.allergies_c.join(',') : patientData.allergies_c
+          allergies_c: Array.isArray(patientData.allergies_c) ? patientData.allergies_c.join(',') : patientData.allergies_c,
+          doctor_id_c: patientData.doctor_id_c ? parseInt(patientData.doctor_id_c) : undefined
         }]
       };
       

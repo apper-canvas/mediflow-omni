@@ -3,7 +3,7 @@ import FormField from "@/components/molecules/FormField";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 
-const PatientForm = ({ patient, onSubmit, onCancel }) => {
+const PatientForm = ({ patient, doctors = [], onSubmit, onCancel }) => {
 const [formData, setFormData] = useState({
     first_name_c: "",
     last_name_c: "",
@@ -16,14 +16,16 @@ const [formData, setFormData] = useState({
     address_c: "",
     emergency_contact_c: "",
     emergency_phone_c: "",
-    allergies_c: ""
+    allergies_c: "",
+    doctor_id_c: ""
   });
 
 useEffect(() => {
-    if (patient) {
+if (patient) {
       setFormData({
         ...patient,
-        allergies_c: Array.isArray(patient.allergies_c) ? patient.allergies_c.join(", ") : (patient.allergies_c || "")
+        allergies_c: Array.isArray(patient.allergies_c) ? patient.allergies_c.join(", ") : (patient.allergies_c || ""),
+        doctor_id_c: patient.doctor_id_c?.Id || patient.doctor_id_c || ""
       });
     }
   }, [patient]);
@@ -40,7 +42,8 @@ useEffect(() => {
     e.preventDefault();
     const submitData = {
 ...formData,
-      allergies_c: formData.allergies_c.split(",").map((a) => a.trim()).filter(Boolean)
+      allergies_c: formData.allergies_c.split(",").map((a) => a.trim()).filter(Boolean),
+      doctor_id_c: formData.doctor_id_c || undefined
     };
     onSubmit(submitData);
   };
@@ -137,8 +140,23 @@ name="emergency_phone_c"
           value={formData.emergency_phone_c}
           onChange={handleChange}
           required
-        />
+/>
       </div>
+
+      <FormField
+        label="Doctor"
+        name="doctor_id_c"
+        type="select"
+        value={formData.doctor_id_c}
+        onChange={handleChange}
+        options={[
+          { value: "", label: "Select Doctor" },
+          ...doctors.map(doc => ({ 
+            value: doc.Id, 
+            label: doc.name_c || doc.Name 
+          }))
+        ]}
+      />
       
       <FormField
 label="Address"

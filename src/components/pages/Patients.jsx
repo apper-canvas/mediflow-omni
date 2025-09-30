@@ -12,6 +12,7 @@ import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import { patientService } from "@/services/api/patientService";
+import { doctorService } from "@/services/api/doctorService";
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
@@ -22,9 +23,10 @@ const Patients = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [patientToDelete, setPatientToDelete] = useState(null);
-
-  useEffect(() => {
+  const [doctors, setDoctors] = useState([]);
+useEffect(() => {
     loadPatients();
+    loadDoctors();
   }, []);
 
   const loadPatients = async () => {
@@ -38,6 +40,15 @@ const Patients = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+};
+
+  const loadDoctors = async () => {
+    try {
+      const data = await doctorService.getAll();
+      setDoctors(data || []);
+    } catch (err) {
+      console.error("Error loading doctors:", err);
     }
   };
 
@@ -175,8 +186,9 @@ p.first_name_c?.toLowerCase().includes(lowerQuery) ||
         title={selectedPatient ? "Edit Patient" : "Register New Patient"}
         size="lg"
       >
-        <PatientForm
+<PatientForm
           patient={selectedPatient}
+          doctors={doctors}
           onSubmit={handleSubmit}
           onCancel={() => {
             setIsModalOpen(false);
