@@ -1,19 +1,21 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import Badge from "@/components/atoms/Badge";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
+import DoctorForm from "@/components/organisms/DoctorForm";
 import { doctorService } from "@/services/api/doctorService";
 import { departmentService } from "@/services/api/departmentService";
-
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Badge from "@/components/atoms/Badge";
+import Modal from "@/components/molecules/Modal";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [showCreateModal, setShowCreateModal] = useState(false);
   useEffect(() => {
     loadDoctors();
   }, []);
@@ -33,6 +35,19 @@ const Doctors = () => {
     } finally {
       setLoading(false);
     }
+};
+
+  const handleCreateDoctor = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  const handleDoctorCreated = () => {
+    setShowCreateModal(false);
+    loadDoctors();
   };
 
   const getDepartmentName = (departmentId) => {
@@ -56,11 +71,18 @@ const department = departments.find(
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Doctors</h1>
           <p className="text-slate-600">Medical staff directory and availability</p>
         </div>
+        <Button
+          variant="primary"
+          onClick={handleCreateDoctor}
+        >
+          <ApperIcon name="Plus" size={18} />
+          Create Doctor
+        </Button>
       </div>
 
       <motion.div
@@ -126,8 +148,20 @@ const department = departments.find(
               </motion.div>
             ))}
           </div>
-        )}
+)}
       </motion.div>
+
+      <Modal
+        isOpen={showCreateModal}
+        onClose={handleCloseCreateModal}
+        title="Create New Doctor"
+        size="lg"
+      >
+        <DoctorForm
+          onSuccess={handleDoctorCreated}
+          onCancel={handleCloseCreateModal}
+        />
+      </Modal>
     </div>
   );
 };
