@@ -1,0 +1,263 @@
+[
+  {
+    "Id": 1,
+    "roomNumber": "101",
+    "ward": "General Ward",
+    "floor": 1,
+    "roomType": "Standard",
+    "beds": [
+      {
+        "bedId": 1,
+        "bedNumber": "101-A",
+        "status": "Occupied",
+        "patientId": 1,
+        "patientName": "John Doe",
+        "admissionDate": "2024-01-15",
+        "notes": "Post-surgery recovery"
+      },
+      {
+        "bedId": 2,
+        "bedNumber": "101-B",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "roomNumber": "102",
+    "ward": "General Ward",
+    "floor": 1,
+    "roomType": "Standard",
+    "beds": [
+      {
+        "bedId": 3,
+        "bedNumber": "102-A",
+        "status": "Occupied",
+        "patientId": 2,
+        "patientName": "Jane Smith",
+        "admissionDate": "2024-01-18",
+        "notes": "Observation"
+      },
+      {
+        "bedId": 4,
+        "bedNumber": "102-B",
+        "status": "Reserved",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": "Reserved for incoming patient"
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "roomNumber": "201",
+    "ward": "ICU",
+    "floor": 2,
+    "roomType": "Intensive Care",
+    "beds": [
+      {
+        "bedId": 5,
+        "bedNumber": "201-A",
+        "status": "Occupied",
+        "patientId": 3,
+        "patientName": "Robert Johnson",
+        "admissionDate": "2024-01-20",
+        "notes": "Critical care monitoring"
+      }
+    ]
+  },
+  {
+    "Id": 4,
+    "roomNumber": "202",
+    "ward": "ICU",
+    "floor": 2,
+    "roomType": "Intensive Care",
+    "beds": [
+      {
+        "bedId": 6,
+        "bedNumber": "202-A",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "roomNumber": "301",
+    "ward": "Pediatrics",
+    "floor": 3,
+    "roomType": "Pediatric",
+    "beds": [
+      {
+        "bedId": 7,
+        "bedNumber": "301-A",
+        "status": "Occupied",
+        "patientId": 4,
+        "patientName": "Emily Davis",
+        "admissionDate": "2024-01-19",
+        "notes": "Pediatric care"
+      },
+      {
+        "bedId": 8,
+        "bedNumber": "301-B",
+        "status": "Cleaning",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": "Deep cleaning in progress"
+      }
+    ]
+  },
+  {
+    "Id": 6,
+    "roomNumber": "302",
+    "ward": "Pediatrics",
+    "floor": 3,
+    "roomType": "Pediatric",
+    "beds": [
+      {
+        "bedId": 9,
+        "bedNumber": "302-A",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      },
+      {
+        "bedId": 10,
+        "bedNumber": "302-B",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "Id": 7,
+    "roomNumber": "401",
+    "ward": "Maternity",
+    "floor": 4,
+    "roomType": "Maternity",
+    "beds": [
+      {
+        "bedId": 11,
+        "bedNumber": "401-A",
+        "status": "Occupied",
+        "patientId": 5,
+        "patientName": "Sarah Wilson",
+        "admissionDate": "2024-01-21",
+        "notes": "Post-delivery care"
+      }
+    ]
+  },
+  {
+    "Id": 8,
+    "roomNumber": "402",
+    "ward": "Maternity",
+    "floor": 4,
+    "roomType": "Maternity",
+    "beds": [
+      {
+        "bedId": 12,
+        "bedNumber": "402-A",
+        "status": "Reserved",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": "Reserved for scheduled delivery"
+      }
+    ]
+  },
+  {
+    "Id": 9,
+    "roomNumber": "501",
+    "ward": "Private",
+    "floor": 5,
+    "roomType": "Private",
+    "beds": [
+      {
+        "bedId": 13,
+        "bedNumber": "501-A",
+        "status": "Occupied",
+        "patientId": 6,
+        "patientName": "Michael Brown",
+        "admissionDate": "2024-01-17",
+        "notes": "VIP patient"
+      }
+    ]
+  },
+  {
+    "Id": 10,
+    "roomNumber": "502",
+    "ward": "Private",
+    "floor": 5,
+    "roomType": "Private",
+    "beds": [
+      {
+        "bedId": 14,
+        "bedNumber": "502-A",
+        "status": "Maintenance",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": "Equipment maintenance scheduled"
+      }
+    ]
+  },
+  {
+    "Id": 11,
+    "roomNumber": "103",
+    "ward": "General Ward",
+    "floor": 1,
+    "roomType": "Standard",
+    "beds": [
+      {
+        "bedId": 15,
+        "bedNumber": "103-A",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      },
+      {
+        "bedId": 16,
+        "bedNumber": "103-B",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "Id": 12,
+    "roomNumber": "203",
+    "ward": "ICU",
+    "floor": 2,
+    "roomType": "Intensive Care",
+    "beds": [
+      {
+        "bedId": 17,
+        "bedNumber": "203-A",
+        "status": "Available",
+        "patientId": null,
+        "patientName": null,
+        "admissionDate": null,
+        "notes": null
+      }
+    ]
+  }
+]

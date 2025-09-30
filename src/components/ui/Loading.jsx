@@ -41,6 +41,29 @@ const Loading = ({ type = "card" }) => {
     );
   }
 
+  if (type === "grid") {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.1 }}
+            className="bg-white rounded-xl p-6 shadow-card"
+          >
+            <div className="h-5 w-3/4 bg-gradient-to-r from-slate-200 to-slate-100 rounded animate-pulse mb-4" />
+            <div className="space-y-3">
+              <div className="h-4 bg-gradient-to-r from-slate-200 to-slate-100 rounded animate-pulse" />
+              <div className="h-4 w-5/6 bg-gradient-to-r from-slate-200 to-slate-100 rounded animate-pulse" />
+              <div className="h-4 w-4/6 bg-gradient-to-r from-slate-200 to-slate-100 rounded animate-pulse" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {[...Array(6)].map((_, i) => (

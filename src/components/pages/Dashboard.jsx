@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import ApperIcon from "@/components/ApperIcon";
-import StatCard from "@/components/molecules/StatCard";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
 import { patientService } from "@/services/api/patientService";
 import { appointmentService } from "@/services/api/appointmentService";
 import { doctorService } from "@/services/api/doctorService";
 import { departmentService } from "@/services/api/departmentService";
-import Badge from "@/components/atoms/Badge";
-import Button from "@/components/atoms/Button";
+import { roomService } from "@/services/api/roomService";
 import { useNavigate } from "react-router-dom";
+import ApperIcon from "@/components/ApperIcon";
+import Patients from "@/components/pages/Patients";
+import Button from "@/components/atoms/Button";
+import Badge from "@/components/atoms/Badge";
+import StatCard from "@/components/molecules/StatCard";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -30,11 +32,12 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
 
-      const [patients, appointments, doctors, departments] = await Promise.all([
+const [patients, appointments, doctors, departments, rooms] = await Promise.all([
         patientService.getAll(),
         appointmentService.getTodayAppointments(),
         doctorService.getAll(),
-        departmentService.getAll()
+        departmentService.getAll(),
+        roomService.getAll()
       ]);
 
       const allAppointments = await appointmentService.getAll();
@@ -43,9 +46,12 @@ const Dashboard = () => {
         totalPatients: patients.length,
         todayAppointments: appointments.length,
         totalDoctors: doctors.length,
-        departments: departments.length,
+departments: departments.length,
         scheduledCount: appointments.filter((a) => a.status === "Scheduled").length,
-        completedCount: allAppointments.filter((a) => a.status === "Completed").length
+        completedCount: allAppointments.filter((a) => a.status === "Completed").length,
+        totalRooms: rooms.length,
+        occupiedBeds: rooms.reduce((acc, room) => acc + room.beds.filter(b => b.status === "Occupied").length, 0),
+        availableBeds: rooms.reduce((acc, room) => acc + room.beds.filter(b => b.status === "Available").length, 0)
       });
 
       setTodayAppointments(appointments.slice(0, 5));
@@ -105,13 +111,34 @@ const Dashboard = () => {
           icon="Stethoscope"
           title="Total Doctors"
           value={stats.totalDoctors}
-          color="info"
+color="info"
         />
         <StatCard
           icon="Building2"
           title="Departments"
           value={stats.departments}
           color="warning"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <StatCard
+          icon="Bed"
+          title="Total Rooms"
+          value={stats.totalRooms}
+          color="primary"
+        />
+        <StatCard
+          icon="UserCheck"
+          title="Occupied Beds"
+          value={stats.occupiedBeds}
+          color="error"
+        />
+        <StatCard
+          icon="BedDouble"
+          title="Available Beds"
+          value={stats.availableBeds}
+          color="success"
         />
       </div>
 

@@ -3,12 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 
 const Sidebar = ({ isOpen, onClose }) => {
-  const navItems = [
+const navItems = [
     { path: "/dashboard", icon: "LayoutDashboard", label: "Dashboard" },
     { path: "/patients", icon: "Users", label: "Patients" },
     { path: "/appointments", icon: "Calendar", label: "Appointments" },
     { path: "/doctors", icon: "Stethoscope", label: "Doctors" },
-    { path: "/departments", icon: "Building2", label: "Departments" }
+    { path: "/departments", icon: "Building2", label: "Departments" },
+    { path: "/rooms", icon: "Bed", label: "Room Management" }
   ];
 
   const NavContent = () => (

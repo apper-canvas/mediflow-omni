@@ -7,7 +7,7 @@ import PatientDetail from "@/components/pages/PatientDetail";
 import Appointments from "@/components/pages/Appointments";
 import Doctors from "@/components/pages/Doctors";
 import Departments from "@/components/pages/Departments";
-
+import RoomManagement from "@/components/pages/RoomManagement";
 function App() {
   return (
     <BrowserRouter>
@@ -28,9 +28,10 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="patients" element={<Patients />} />
           <Route path="patients/:id" element={<PatientDetail />} />
-          <Route path="appointments" element={<Appointments />} />
+<Route path="appointments" element={<Appointments />} />
           <Route path="doctors" element={<Doctors />} />
           <Route path="departments" element={<Departments />} />
+          <Route path="rooms" element={<RoomManagement />} />
         </Route>
       </Routes>
     </BrowserRouter>
