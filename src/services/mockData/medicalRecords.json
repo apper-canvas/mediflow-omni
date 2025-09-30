@@ -1,0 +1,46 @@
+[
+  {
+    "Id": 1,
+    "patientId": "1",
+    "appointmentId": "1",
+    "visitDate": "2023-12-20",
+    "chiefComplaint": "Annual physical examination",
+    "diagnosis": "Healthy, no significant findings",
+    "treatment": "Continue current lifestyle, vitamin D supplementation recommended",
+    "notes": "Blood pressure: 120/80, Heart rate: 72 bpm, Weight: 180 lbs. All lab results within normal range.",
+    "doctorId": "1"
+  },
+  {
+    "Id": 2,
+    "patientId": "2",
+    "appointmentId": "4",
+    "visitDate": "2024-12-19",
+    "chiefComplaint": "Routine vaccination",
+    "diagnosis": "Preventive care",
+    "treatment": "Influenza vaccine administered (0.5ml IM, left deltoid)",
+    "notes": "No adverse reactions observed during 15-minute waiting period. Patient advised on normal side effects.",
+    "doctorId": "4"
+  },
+  {
+    "Id": 3,
+    "patientId": "5",
+    "appointmentId": "5",
+    "visitDate": "2024-12-18",
+    "chiefComplaint": "Chronic knee pain, limited mobility",
+    "diagnosis": "Osteoarthritis, bilateral knees (moderate)",
+    "treatment": "Physical therapy referral, NSAIDs prescribed (Ibuprofen 400mg TID), weight management counseling",
+    "notes": "X-rays show joint space narrowing. Patient responds well to conservative treatment. Follow-up in 6 weeks.",
+    "doctorId": "5"
+  },
+  {
+    "Id": 4,
+    "patientId": "3",
+    "appointmentId": "3",
+    "visitDate": "2024-11-15",
+    "chiefComplaint": "Post-operative follow-up",
+    "diagnosis": "Appendectomy recovery, healing well",
+    "treatment": "Wound care instructions provided, antibiotics completed",
+    "notes": "Surgical site clean and dry, no signs of infection. Patient cleared for normal activities.",
+    "doctorId": "3"
+  }
+]
