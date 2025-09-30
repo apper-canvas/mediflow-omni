@@ -72,8 +72,8 @@ const AppointmentForm = ({ appointment, onSubmit, onCancel }) => {
         >
           <option value="">Select Patient</option>
           {patients.map((patient) => (
-            <option key={patient.Id} value={patient.Id}>
-              {patient.firstName} {patient.lastName} - #{patient.Id}
+<option key={patient.Id} value={patient.Id}>
+              {patient.first_name_c} {patient.last_name_c} - #{patient.Id}
             </option>
           ))}
         </FormField>
@@ -88,8 +88,8 @@ const AppointmentForm = ({ appointment, onSubmit, onCancel }) => {
         >
           <option value="">Select Department</option>
           {departments.map((dept) => (
-            <option key={dept.Id} value={dept.Id}>
-              {dept.name}
+<option key={dept.Id} value={dept.Id}>
+              {dept.Name}
             </option>
           ))}
         </FormField>
@@ -104,8 +104,8 @@ const AppointmentForm = ({ appointment, onSubmit, onCancel }) => {
         >
           <option value="">Select Doctor</option>
           {doctors.map((doctor) => (
-            <option key={doctor.Id} value={doctor.Id}>
-              {doctor.name} - {doctor.specialization}
+<option key={doctor.Id} value={doctor.Id}>
+              {doctor.name_c} - {doctor.specialization_c}
             </option>
           ))}
         </FormField>

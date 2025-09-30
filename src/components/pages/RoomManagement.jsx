@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import SearchBar from "@/components/molecules/SearchBar";
-import Select from "@/components/atoms/Select";
-import Modal from "@/components/molecules/Modal";
-import ConfirmDialog from "@/components/molecules/ConfirmDialog";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
-import RoomCard from "@/components/organisms/RoomCard";
-import BedAssignmentForm from "@/components/organisms/BedAssignmentForm";
 import { roomService } from "@/services/api/roomService";
 import { patientService } from "@/services/api/patientService";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
+import RoomCard from "@/components/organisms/RoomCard";
+import BedAssignmentForm from "@/components/organisms/BedAssignmentForm";
+import Modal from "@/components/molecules/Modal";
+import SearchBar from "@/components/molecules/SearchBar";
+import ConfirmDialog from "@/components/molecules/ConfirmDialog";
+import Error from "@/components/ui/Error";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
 
 const RoomManagement = () => {
   const [rooms, setRooms] = useState([]);
@@ -58,16 +58,16 @@ const RoomManagement = () => {
     let filtered = [...rooms];
 
     if (selectedWard !== "All") {
-      filtered = filtered.filter(r => r.ward === selectedWard);
+filtered = filtered.filter(r => r.ward_c === selectedWard);
     }
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(r =>
-        r.roomNumber.toLowerCase().includes(query) ||
-        r.ward.toLowerCase().includes(query) ||
-        r.roomType.toLowerCase().includes(query) ||
-        r.beds.some(b => b.bedNumber.toLowerCase().includes(query))
+        r.room_number_c?.toLowerCase().includes(query) ||
+        r.ward_c?.toLowerCase().includes(query) ||
+        r.room_type_c?.toLowerCase().includes(query) ||
+        r.beds.some(b => b.bed_number_c?.toLowerCase().includes(query))
       );
     }
 
@@ -79,16 +79,16 @@ const RoomManagement = () => {
       toast.warning("This bed is already occupied");
       return;
     }
-    setSelectedBed({ ...bed, roomId: room.Id, roomNumber: room.roomNumber });
+setSelectedBed({ ...bed, roomId: room.Id, roomNumber: room.room_number_c });
     setAssignmentModalOpen(true);
   };
 
-  const handleUnassignBed = (room, bed) => {
+const handleUnassignBed = (room, bed) => {
     setActionToConfirm({
       type: "unassign",
       roomId: room.Id,
-      bedNumber: bed.bedNumber,
-      patientName: bed.patientName
+      bedNumber: bed.bed_number_c,
+      patientName: bed.patient_name_c || 'Unknown Patient'
     });
     setConfirmDialogOpen(true);
   };
@@ -96,10 +96,10 @@ const RoomManagement = () => {
   const handleBedStatusChange = (room, bed, newStatus) => {
     setActionToConfirm({
       type: "statusChange",
-      roomId: room.Id,
-      bedNumber: bed.bedNumber,
+roomId: room.Id,
+      bedNumber: bed.bed_number_c,
       newStatus,
-      bedId: bed.bedNumber
+      bedId: bed.bed_number_c
     });
     setConfirmDialogOpen(true);
   };
@@ -107,7 +107,7 @@ const RoomManagement = () => {
   const confirmAction = async () => {
     try {
       if (actionToConfirm.type === "unassign") {
-        await roomService.unassignPatient(
+await roomService.unassignPatient(
           actionToConfirm.roomId,
           actionToConfirm.bedNumber
         );
@@ -145,7 +145,7 @@ const RoomManagement = () => {
     }
   };
 
-  const wards = ["All", ...new Set(rooms.map(r => r.ward))];
+const wards = ["All", ...new Set(rooms.map(r => r.ward_c))];
 
   const stats = {
     totalRooms: rooms.length,

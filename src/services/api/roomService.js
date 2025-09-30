@@ -1,161 +1,220 @@
-import mockRooms from "@/services/mockData/rooms.json";
+import { bedService } from './bedService';
 
-let rooms = JSON.parse(JSON.stringify(mockRooms));
-let bedIdCounter = Math.max(...rooms.flatMap(r => r.beds.map(b => b.bedId)), 0) + 1;
+const { ApperClient } = window.ApperSDK;
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const apperClient = new ApperClient({
+  apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+  apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+});
 
 export const roomService = {
   async getAll() {
-    await delay(800);
-    return JSON.parse(JSON.stringify(rooms));
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "room_number_c"}},
+          {"field": {"Name": "ward_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "room_type_c"}}
+        ]
+      };
+      
+      const response = await apperClient.fetchRecords('room_c', params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      const rooms = [];
+      for (const room of response.data) {
+        const beds = await bedService.getByRoomId(room.Id);
+        rooms.push({
+          ...room,
+          beds: beds || []
+        });
+      }
+      
+      return rooms;
+    } catch (error) {
+      console.error("apper_info: An error was received in fetching rooms. The error is:", error.message);
+      return [];
+    }
   },
 
   async getById(id) {
-    await delay(500);
-    const room = rooms.find(r => r.Id === parseInt(id));
-    if (!room) throw new Error("Room not found");
-    return JSON.parse(JSON.stringify(room));
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "room_number_c"}},
+          {"field": {"Name": "ward_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "room_type_c"}}
+        ]
+      };
+      
+      const response = await apperClient.getRecordById('room_c', parseInt(id), params);
+      
+      if (!response?.data) {
+        return null;
+      }
+      
+      const beds = await bedService.getByRoomId(response.data.Id);
+      
+      return {
+        ...response.data,
+        beds: beds || []
+      };
+    } catch (error) {
+      console.error(`apper_info: An error was received in fetching room ${id}. The error is:`, error.message);
+      return null;
+    }
   },
 
   async getRoomsByWard(ward) {
-    await delay(600);
-    const filtered = rooms.filter(r => r.ward === ward);
-    return JSON.parse(JSON.stringify(filtered));
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "room_number_c"}},
+          {"field": {"Name": "ward_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "room_type_c"}}
+        ],
+        where: [
+          {"FieldName": "ward_c", "Operator": "EqualTo", "Values": [ward]}
+        ]
+      };
+      
+      const response = await apperClient.fetchRecords('room_c', params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      const rooms = [];
+      for (const room of response.data) {
+        const beds = await bedService.getByRoomId(room.Id);
+        rooms.push({
+          ...room,
+          beds: beds || []
+        });
+      }
+      
+      return rooms;
+    } catch (error) {
+      console.error("apper_info: An error was received in fetching rooms by ward. The error is:", error.message);
+      return [];
+    }
   },
 
   async getBedsByStatus(status) {
-    await delay(600);
-    const allBeds = rooms.flatMap(room => 
-      room.beds.map(bed => ({
-        ...bed,
-        roomNumber: room.roomNumber,
-        ward: room.ward,
-        floor: room.floor,
-        roomType: room.roomType
-      }))
-    );
-    const filtered = allBeds.filter(b => b.status === status);
-    return JSON.parse(JSON.stringify(filtered));
+    return await bedService.getByStatus(status);
   },
 
   async assignPatient(roomId, bedNumber, patientData) {
-    await delay(700);
-    const room = rooms.find(r => r.Id === parseInt(roomId));
-    if (!room) throw new Error("Room not found");
-
-    const bed = room.beds.find(b => b.bedNumber === bedNumber);
-    if (!bed) throw new Error("Bed not found");
-    if (bed.status === "Occupied") throw new Error("Bed is already occupied");
-
-    bed.status = "Occupied";
-    bed.patientId = patientData.patientId;
-    bed.patientName = patientData.patientName;
-    bed.admissionDate = patientData.admissionDate;
-    bed.notes = patientData.notes || null;
-
-    return JSON.parse(JSON.stringify(room));
+    return await bedService.assignPatient(roomId, bedNumber, patientData);
   },
 
   async unassignPatient(roomId, bedNumber) {
-    await delay(700);
-    const room = rooms.find(r => r.Id === parseInt(roomId));
-    if (!room) throw new Error("Room not found");
-
-    const bed = room.beds.find(b => b.bedNumber === bedNumber);
-    if (!bed) throw new Error("Bed not found");
-
-    bed.status = "Available";
-    bed.patientId = null;
-    bed.patientName = null;
-    bed.admissionDate = null;
-    bed.notes = null;
-
-    return JSON.parse(JSON.stringify(room));
+    return await bedService.unassignPatient(roomId, bedNumber);
   },
 
   async updateBedStatus(roomId, bedNumber, status, notes = null) {
-    await delay(600);
-    const room = rooms.find(r => r.Id === parseInt(roomId));
-    if (!room) throw new Error("Room not found");
-
-    const bed = room.beds.find(b => b.bedNumber === bedNumber);
-    if (!bed) throw new Error("Bed not found");
-
-    const validStatuses = ["Available", "Occupied", "Reserved", "Maintenance", "Cleaning"];
-    if (!validStatuses.includes(status)) {
-      throw new Error("Invalid status");
-    }
-
-    bed.status = status;
-    if (notes !== null) {
-      bed.notes = notes;
-    }
-
-    if (status !== "Occupied") {
-      bed.patientId = null;
-      bed.patientName = null;
-      bed.admissionDate = null;
-    }
-
-    return JSON.parse(JSON.stringify(room));
+    return await bedService.updateStatus(roomId, bedNumber, status, notes);
   },
 
   async create(roomData) {
-    await delay(800);
-    const newId = Math.max(...rooms.map(r => r.Id), 0) + 1;
-    
-    const newRoom = {
-      Id: newId,
-      roomNumber: roomData.roomNumber,
-      ward: roomData.ward,
-      floor: roomData.floor,
-      roomType: roomData.roomType,
-      beds: (roomData.beds || []).map(bed => ({
-        bedId: bedIdCounter++,
-        bedNumber: bed.bedNumber,
-        status: bed.status || "Available",
-        patientId: null,
-        patientName: null,
-        admissionDate: null,
-        notes: null
-      }))
-    };
-
-    rooms.push(newRoom);
-    return JSON.parse(JSON.stringify(newRoom));
+    try {
+      const params = {
+        records: [{
+          room_number_c: roomData.room_number_c,
+          ward_c: roomData.ward_c,
+          floor_c: roomData.floor_c,
+          room_type_c: roomData.room_type_c
+        }]
+      };
+      
+      const response = await apperClient.createRecord('room_c', params);
+      
+      if (!response.success) {
+        console.error("apper_info: An error was received in creating room. The response body is:", JSON.stringify(response));
+        return null;
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("apper_info: An error was received in creating room. The error is:", error.message);
+      return null;
+    }
   },
 
   async update(id, roomData) {
-    await delay(800);
-    const index = rooms.findIndex(r => r.Id === parseInt(id));
-    if (index === -1) throw new Error("Room not found");
-
-    const existingBeds = rooms[index].beds;
-    rooms[index] = {
-      ...rooms[index],
-      roomNumber: roomData.roomNumber,
-      ward: roomData.ward,
-      floor: roomData.floor,
-      roomType: roomData.roomType,
-      beds: existingBeds
-    };
-
-    return JSON.parse(JSON.stringify(rooms[index]));
+    try {
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          room_number_c: roomData.room_number_c,
+          ward_c: roomData.ward_c,
+          floor_c: roomData.floor_c,
+          room_type_c: roomData.room_type_c
+        }]
+      };
+      
+      const response = await apperClient.updateRecord('room_c', params);
+      
+      if (!response.success) {
+        console.error("apper_info: An error was received in updating room. The response body is:", JSON.stringify(response));
+        return null;
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("apper_info: An error was received in updating room. The error is:", error.message);
+      return null;
+    }
   },
 
   async delete(id) {
-    await delay(700);
-    const index = rooms.findIndex(r => r.Id === parseInt(id));
-    if (index === -1) throw new Error("Room not found");
-
-    const room = rooms[index];
-    const hasOccupiedBeds = room.beds.some(b => b.status === "Occupied");
-    if (hasOccupiedBeds) {
-      throw new Error("Cannot delete room with occupied beds");
+    try {
+      const beds = await bedService.getByRoomId(id);
+      const hasOccupiedBeds = beds.some(b => b.status_c === "Occupied");
+      
+      if (hasOccupiedBeds) {
+        console.error("apper_info: Cannot delete room with occupied beds");
+        return { success: false, message: "Cannot delete room with occupied beds" };
+      }
+      
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+      
+      const response = await apperClient.deleteRecord('room_c', params);
+      
+      if (!response.success) {
+        console.error("apper_info: An error was received in deleting room. The response body is:", JSON.stringify(response));
+        return { success: false };
+      }
+      
+      return { success: true };
+    } catch (error) {
+      console.error("apper_info: An error was received in deleting room. The error is:", error.message);
+      return { success: false };
     }
-
-    rooms.splice(index, 1);
-    return { success: true };
   }
 };

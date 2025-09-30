@@ -36,8 +36,8 @@ const Doctors = () => {
   };
 
   const getDepartmentName = (departmentId) => {
-    const department = departments.find(
-      (d) => d.Id.toString() === departmentId.toString()
+const department = departments.find(
+      (d) => d.Id.toString() === (departmentId?.Id || departmentId).toString()
     );
     return department ? department.name : "Unknown Department";
   };
@@ -99,24 +99,24 @@ const Doctors = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center">
                     <ApperIcon name="UserCheck" className="text-primary" size={28} />
                   </div>
-                  {getAvailabilityBadge(doctor.availabilityStatus)}
+{getAvailabilityBadge(doctor.availability_status_c)}
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-900 mb-1">{doctor.name}</h3>
-                <p className="text-primary font-medium mb-4">{doctor.specialization}</p>
+<h3 className="text-xl font-bold text-slate-900 mb-1">{doctor.name_c}</h3>
+<p className="text-primary font-medium mb-4">{doctor.specialization_c}</p>
 
                 <div className="space-y-3 pt-4 border-t border-slate-200">
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="Building2" size={16} />
-                    <span>{getDepartmentName(doctor.departmentId)}</span>
+<span>{getDepartmentName(doctor.department_id_c)}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-600">
-                    <ApperIcon name="Phone" size={16} />
-                    <span>{doctor.phone}</span>
+<ApperIcon name="Phone" size={16} />
+                    <span>{doctor.phone_c}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="Mail" size={16} />
-                    <span className="truncate">{doctor.email}</span>
+                    <span>{doctor.email_c}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="Award" size={16} />

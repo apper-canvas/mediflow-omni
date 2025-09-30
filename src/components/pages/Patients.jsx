@@ -50,10 +50,10 @@ const Patients = () => {
     const lowerQuery = query.toLowerCase();
     const filtered = patients.filter(
       (p) =>
-        p.firstName.toLowerCase().includes(lowerQuery) ||
-        p.lastName.toLowerCase().includes(lowerQuery) ||
+p.first_name_c?.toLowerCase().includes(lowerQuery) ||
+        p.last_name_c?.toLowerCase().includes(lowerQuery) ||
         p.Id.toString().includes(lowerQuery) ||
-        p.phone.includes(query)
+        p.phone_c?.includes(query)
     );
     setFilteredPatients(filtered);
   };

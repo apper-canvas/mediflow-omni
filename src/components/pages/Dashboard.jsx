@@ -170,13 +170,13 @@ color="info"
                       <ApperIcon name="Clock" className="text-primary" size={20} />
                     </div>
                     <div>
-                      <p className="font-medium text-slate-900">{appointment.reason}</p>
+<p className="font-medium text-slate-900">{appointment.reason_c}</p>
                       <p className="text-sm text-slate-600">
-                        Patient ID: #{appointment.patientId} • {appointment.time}
+                        Patient ID: #{appointment.patient_id_c?.Id || appointment.patient_id_c} • {appointment.time_c}
                       </p>
                     </div>
                   </div>
-                  {getStatusBadge(appointment.status)}
+{getStatusBadge(appointment.status_c)}
                 </motion.div>
               ))
             ) : (
@@ -216,15 +216,15 @@ color="info"
                     <ApperIcon name="User" className="text-success" size={20} />
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900">
-                      {patient.firstName} {patient.lastName}
+<p className="font-medium text-slate-900">
+                      {patient.first_name_c} {patient.last_name_c}
                     </p>
                     <p className="text-sm text-slate-600">
-                      {patient.age} years • {patient.bloodGroup}
+                      {patient.age_c} years • {patient.blood_group_c}
                     </p>
                   </div>
                 </div>
-                <Badge variant="success">{patient.status}</Badge>
+<Badge variant="success">{patient.status_c}</Badge>
               </motion.div>
             ))}
           </div>

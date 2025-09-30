@@ -4,26 +4,26 @@ import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 
 const PatientForm = ({ patient, onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
-    age: "",
-    gender: "Male",
-    bloodGroup: "A+",
-    phone: "",
-    email: "",
-    address: "",
-    emergencyContact: "",
-    emergencyPhone: "",
-    allergies: ""
+const [formData, setFormData] = useState({
+    first_name_c: "",
+    last_name_c: "",
+    date_of_birth_c: "",
+    age_c: "",
+    gender_c: "Male",
+    blood_group_c: "A+",
+    phone_c: "",
+    email_c: "",
+    address_c: "",
+    emergency_contact_c: "",
+    emergency_phone_c: "",
+    allergies_c: ""
   });
 
-  useEffect(() => {
+useEffect(() => {
     if (patient) {
       setFormData({
         ...patient,
-        allergies: patient.allergies?.join(", ") || ""
+        allergies_c: Array.isArray(patient.allergies_c) ? patient.allergies_c.join(", ") : (patient.allergies_c || "")
       });
     }
   }, [patient]);
@@ -39,8 +39,8 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const submitData = {
-      ...formData,
-      allergies: formData.allergies.split(",").map((a) => a.trim()).filter(Boolean)
+...formData,
+      allergies_c: formData.allergies_c.split(",").map((a) => a.trim()).filter(Boolean)
     };
     onSubmit(submitData);
   };
@@ -50,39 +50,39 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           label="First Name"
-          name="firstName"
-          value={formData.firstName}
+name="first_name_c"
+          value={formData.first_name_c}
           onChange={handleChange}
           required
         />
-        <FormField
+<FormField
           label="Last Name"
-          name="lastName"
+          name="last_name_c"
           value={formData.lastName}
           onChange={handleChange}
           required
         />
         <FormField
-          label="Date of Birth"
-          name="dateOfBirth"
+label="Date of Birth"
+          name="date_of_birth_c"
           type="date"
-          value={formData.dateOfBirth}
+          value={formData.date_of_birth_c}
           onChange={handleChange}
           required
         />
         <FormField
-          label="Age"
-          name="age"
+label="Age"
+          name="age_c"
           type="number"
-          value={formData.age}
+          value={formData.age_c}
           onChange={handleChange}
           required
         />
         <FormField
-          label="Gender"
-          name="gender"
+label="Gender"
+          name="gender_c"
           as="select"
-          value={formData.gender}
+          value={formData.gender_c}
           onChange={handleChange}
           required
         >
@@ -91,10 +91,10 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
           <option value="Other">Other</option>
         </FormField>
         <FormField
-          label="Blood Group"
-          name="bloodGroup"
+label="Blood Group"
+          name="blood_group_c"
           as="select"
-          value={formData.bloodGroup}
+          value={formData.blood_group_c}
           onChange={handleChange}
           required
         >
@@ -108,52 +108,52 @@ const PatientForm = ({ patient, onSubmit, onCancel }) => {
           <option value="O-">O-</option>
         </FormField>
         <FormField
-          label="Phone"
-          name="phone"
+label="Phone"
+          name="phone_c"
           type="tel"
-          value={formData.phone}
+          value={formData.phone_c}
           onChange={handleChange}
           required
         />
         <FormField
-          label="Email"
-          name="email"
+label="Email"
+          name="email_c"
           type="email"
-          value={formData.email}
+          value={formData.email_c}
           onChange={handleChange}
           required
         />
         <FormField
-          label="Emergency Contact Name"
-          name="emergencyContact"
-          value={formData.emergencyContact}
+label="Emergency Contact Name"
+          name="emergency_contact_c"
+          value={formData.emergency_contact_c}
           onChange={handleChange}
           required
         />
         <FormField
           label="Emergency Phone"
-          name="emergencyPhone"
+name="emergency_phone_c"
           type="tel"
-          value={formData.emergencyPhone}
+          value={formData.emergency_phone_c}
           onChange={handleChange}
           required
         />
       </div>
       
       <FormField
-        label="Address"
-        name="address"
+label="Address"
+        name="address_c"
         as="textarea"
-        value={formData.address}
+        value={formData.address_c}
         onChange={handleChange}
         rows={3}
         required
       />
       
       <FormField
-        label="Allergies"
-        name="allergies"
-        value={formData.allergies}
+label="Allergies"
+        name="allergies_c"
+        value={formData.allergies_c}
         onChange={handleChange}
         placeholder="Enter allergies separated by commas"
       />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
@@ -36,16 +36,17 @@ const BedAssignmentForm = ({ bed, patients, onSubmit, onCancel }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+const handleSubmit = (e) => {
     e.preventDefault();
     
     if (!validate()) return;
 
     const selectedPatient = patients.find(p => p.Id === parseInt(formData.patientId));
-    
+    if (!selectedPatient) return;
+
     const assignmentData = {
       patientId: parseInt(formData.patientId),
-      patientName: `${selectedPatient.firstName} ${selectedPatient.lastName}`,
+      patientName: `${selectedPatient.first_name_c} ${selectedPatient.last_name_c}`,
       admissionDate: formData.admissionDate,
       notes: formData.notes.trim() || null
     };
@@ -53,7 +54,7 @@ const BedAssignmentForm = ({ bed, patients, onSubmit, onCancel }) => {
     onSubmit(assignmentData);
   };
 
-  const activePatients = patients.filter(p => p.status === "Active");
+const activePatients = patients.filter(p => p.status_c === "Active");
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -62,7 +63,7 @@ const BedAssignmentForm = ({ bed, patients, onSubmit, onCancel }) => {
           <div>
             <p className="text-sm font-medium text-slate-700">Bed Assignment</p>
             <p className="text-xs text-slate-600 mt-1">
-              Room {bed.roomNumber} • Bed {bed.bedNumber}
+Room {bed.roomNumber} • Bed {bed.bed_number_c || bed.bedNumber}
             </p>
           </div>
           <div className="px-3 py-1 bg-success/10 text-success rounded-full text-xs font-medium">
@@ -83,8 +84,8 @@ const BedAssignmentForm = ({ bed, patients, onSubmit, onCancel }) => {
         >
           <option value="">Choose a patient...</option>
           {activePatients.map(patient => (
-            <option key={patient.Id} value={patient.Id}>
-              {patient.firstName} {patient.lastName} - ID: {patient.Id} ({patient.age} years, {patient.bloodGroup})
+<option key={patient.Id} value={patient.Id}>
+              {patient.first_name_c} {patient.last_name_c} - ID: {patient.Id} ({patient.age_c} years, {patient.blood_group_c})
             </option>
           ))}
         </Select>

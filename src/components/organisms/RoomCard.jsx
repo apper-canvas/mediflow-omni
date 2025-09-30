@@ -44,11 +44,11 @@ const RoomCard = ({ room, index, onAssignBed, onUnassignBed, onBedStatusChange }
               <ApperIcon name="Building" className="text-primary" size={20} />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">Room {room.roomNumber}</h3>
-              <p className="text-sm text-slate-600">{room.ward} • Floor {room.floor}</p>
+<h3 className="text-lg font-bold text-slate-900">Room {room.room_number_c}</h3>
+              <p className="text-sm text-slate-600">{room.ward_c} • Floor {room.floor_c}</p>
             </div>
           </div>
-          <Badge variant="primary">{room.roomType}</Badge>
+<Badge variant="primary">{room.room_type_c}</Badge>
         </div>
 
         <div className="mb-4">
@@ -75,7 +75,7 @@ const RoomCard = ({ room, index, onAssignBed, onUnassignBed, onBedStatusChange }
           <p className="text-sm font-semibold text-slate-700 mb-2">Beds:</p>
           {room.beds.map(bed => (
             <div
-              key={bed.bedId}
+key={bed.bedId}
               className="p-3 bg-slate-50 rounded-lg border border-slate-200 hover:border-primary/30 transition-colors duration-200"
             >
               <div className="flex items-center justify-between mb-2">
@@ -85,7 +85,7 @@ const RoomCard = ({ room, index, onAssignBed, onUnassignBed, onBedStatusChange }
                     size={16} 
                     className={`text-${getStatusColor(bed.status)}`}
                   />
-                  <span className="font-medium text-slate-900 text-sm">{bed.bedNumber}</span>
+                  <span className="font-medium text-slate-900 text-sm">{bed.bed_number_c || bed.bedNumber}</span>
                 </div>
                 <Badge variant={getStatusColor(bed.status)} size="sm">
                   {bed.status}

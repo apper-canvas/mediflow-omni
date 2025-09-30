@@ -48,9 +48,9 @@ const PatientDetail = () => {
     }
   };
 
-  const getDoctorName = (doctorId) => {
+const getDoctorName = (doctorId) => {
     const doctor = doctors.find((d) => d.Id.toString() === doctorId.toString());
-    return doctor ? doctor.name : "Unknown Doctor";
+    return doctor ? (doctor.name_c || "Unknown Doctor") : "Unknown Doctor";
   };
 
   const getStatusBadge = (status) => {
@@ -92,35 +92,35 @@ const PatientDetail = () => {
             </div>
             <div>
               <h1 className="text-3xl font-bold mb-2">
-                {patient.firstName} {patient.lastName}
+{patient.first_name_c} {patient.last_name_c}
               </h1>
               <div className="flex items-center gap-4 text-primary-light">
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Calendar" size={16} />
-                  <span>{patient.age} years old</span>
+<span>{patient.age_c} years old</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Phone" size={16} />
-                  <span>{patient.phone}</span>
+<span>{patient.phone_c}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Mail" size={16} />
-                  <span>{patient.email}</span>
+<span>{patient.email_c}</span>
                 </div>
               </div>
             </div>
           </div>
-          {getStatusBadge(patient.status)}
+{getStatusBadge(patient.status_c)}
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <p className="text-primary-light text-sm mb-1">Blood Group</p>
-            <p className="text-2xl font-bold">{patient.bloodGroup}</p>
+<p className="text-2xl font-bold">{patient.blood_group_c}</p>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <p className="text-primary-light text-sm mb-1">Gender</p>
-            <p className="text-2xl font-bold">{patient.gender}</p>
+<p className="text-2xl font-bold">{patient.gender_c}</p>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <p className="text-primary-light text-sm mb-1">Appointments</p>
@@ -166,18 +166,18 @@ const PatientDetail = () => {
                     <div className="flex justify-between py-2 border-b border-slate-100">
                       <span className="text-slate-600">Date of Birth</span>
                       <span className="font-medium text-slate-900">
-                        {format(new Date(patient.dateOfBirth), "MMMM d, yyyy")}
+{format(new Date(patient.date_of_birth_c), "MMMM d, yyyy")}
                       </span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-slate-100">
                       <span className="text-slate-600">Registration Date</span>
                       <span className="font-medium text-slate-900">
-                        {format(new Date(patient.registrationDate), "MMMM d, yyyy")}
+{format(new Date(patient.registration_date_c), "MMMM d, yyyy")}
                       </span>
                     </div>
                     <div className="flex justify-between py-2">
                       <span className="text-slate-600">Address</span>
-                      <span className="font-medium text-slate-900 text-right">{patient.address}</span>
+<span className="font-medium text-slate-900 text-right">{patient.address_c}</span>
                     </div>
                   </div>
                 </div>
@@ -187,11 +187,11 @@ const PatientDetail = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between py-2 border-b border-slate-100">
                       <span className="text-slate-600">Contact Name</span>
-                      <span className="font-medium text-slate-900">{patient.emergencyContact}</span>
+<span className="font-medium text-slate-900">{patient.emergency_contact_c}</span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-slate-100">
                       <span className="text-slate-600">Contact Phone</span>
-                      <span className="font-medium text-slate-900">{patient.emergencyPhone}</span>
+<span className="font-medium text-slate-900">{patient.emergency_phone_c}</span>
                     </div>
                   </div>
                 </div>
@@ -204,9 +204,9 @@ const PatientDetail = () => {
                     <ApperIcon name="AlertCircle" className="text-warning mt-0.5" size={20} />
                     <div>
                       <p className="font-medium text-slate-900 mb-1">Allergies</p>
-                      {patient.allergies && patient.allergies.length > 0 ? (
+{patient.allergies_c && patient.allergies_c.length > 0 ? (
                         <div className="flex flex-wrap gap-2">
-                          {patient.allergies.map((allergy, index) => (
+                          {patient.allergies_c.map((allergy, index) => (
                             <Badge key={index} variant="warning">
                               {allergy}
                             </Badge>
@@ -242,16 +242,16 @@ const PatientDetail = () => {
                         <ApperIcon name="Calendar" className="text-primary" size={20} />
                       </div>
                       <div>
-                        <p className="font-medium text-slate-900">{appointment.reason}</p>
+<p className="font-medium text-slate-900">{appointment.reason_c}</p>
                         <p className="text-sm text-slate-600">
                           {format(new Date(appointment.date), "MMMM d, yyyy")} at {appointment.time}
-                        </p>
+</p>
                         <p className="text-sm text-slate-600">
-                          Dr. {getDoctorName(appointment.doctorId)}
+                          Dr. {getDoctorName(appointment.doctor_id_c?.Id || appointment.doctor_id_c)}
                         </p>
                       </div>
                     </div>
-                    {getStatusBadge(appointment.status)}
+{getStatusBadge(appointment.status_c)}
                   </motion.div>
                 ))
               ) : (
@@ -281,28 +281,28 @@ const PatientDetail = () => {
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h3 className="text-lg font-bold text-slate-900 mb-1">
-                          {record.chiefComplaint}
+{record.chief_complaint_c}
                         </h3>
                         <p className="text-sm text-slate-600">
-                          {format(new Date(record.visitDate), "MMMM d, yyyy")} • 
-                          Dr. {getDoctorName(record.doctorId)}
+{format(new Date(record.visit_date_c), "MMMM d, yyyy")} • 
+                          Dr. {getDoctorName(record.doctor_id_c?.Id || record.doctor_id_c)}
                         </p>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <p className="text-sm font-medium text-slate-600 mb-1">Diagnosis</p>
-                        <p className="text-slate-900">{record.diagnosis}</p>
+<p className="text-slate-900">{record.diagnosis_c}</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-slate-600 mb-1">Treatment</p>
-                        <p className="text-slate-900">{record.treatment}</p>
+<p className="text-slate-900">{record.treatment_c}</p>
                       </div>
                     </div>
-                    {record.notes && (
+{record.notes_c && (
                       <div className="mt-4 pt-4 border-t border-slate-200">
                         <p className="text-sm font-medium text-slate-600 mb-1">Notes</p>
-                        <p className="text-slate-900">{record.notes}</p>
+                        <p className="text-slate-900">{record.notes_c}</p>
                       </div>
                     )}
                   </motion.div>

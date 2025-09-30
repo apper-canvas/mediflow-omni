@@ -68,13 +68,13 @@ const Appointments = () => {
   };
 
   const getPatientName = (patientId) => {
-    const patient = patients.find((p) => p.Id.toString() === patientId.toString());
-    return patient ? `${patient.firstName} ${patient.lastName}` : "Unknown Patient";
+const patient = patients.find((p) => p.Id.toString() === (patientId?.Id || patientId).toString());
+    return patient ? `${patient.first_name_c} ${patient.last_name_c}` : "Unknown Patient";
   };
 
   const getDoctorName = (doctorId) => {
-    const doctor = doctors.find((d) => d.Id.toString() === doctorId.toString());
-    return doctor ? doctor.name : "Unknown Doctor";
+const doctor = doctors.find((d) => d.Id.toString() === (doctorId?.Id || doctorId).toString());
+    return doctor ? doctor.name_c : "Unknown Doctor";
   };
 
   const getStatusBadge = (status) => {
@@ -209,37 +209,37 @@ const Appointments = () => {
                   <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl flex items-center justify-center">
                     <div className="text-center">
                       <p className="text-2xl font-bold text-primary">
-                        {format(new Date(appointment.date), "d")}
+{format(new Date(appointment.date_c), "d")}
                       </p>
                       <p className="text-xs text-slate-600">
-                        {format(new Date(appointment.date), "MMM")}
+{format(new Date(appointment.date_c), "MMM")}
                       </p>
                     </div>
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 mb-1">
-                      {appointment.reason}
+{appointment.reason_c}
                     </h3>
                     <div className="flex items-center gap-4 text-sm text-slate-600">
                       <div className="flex items-center gap-1.5">
                         <ApperIcon name="User" size={14} />
-                        <span>{getPatientName(appointment.patientId)}</span>
+<span>{getPatientName(appointment.patient_id_c)}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <ApperIcon name="Stethoscope" size={14} />
-                        <span>{getDoctorName(appointment.doctorId)}</span>
+<span>{getDoctorName(appointment.doctor_id_c)}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <ApperIcon name="Clock" size={14} />
-                        <span>{appointment.time}</span>
+<span>{appointment.time_c}</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  {getStatusBadge(appointment.status)}
+{getStatusBadge(appointment.status_c)}
                   <div className="flex items-center gap-2">
-                    {appointment.status === "Scheduled" && (
+{appointment.status_c === "Scheduled" && (
                       <>
                         <Button
                           variant="ghost"

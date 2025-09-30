@@ -39,20 +39,20 @@ const Departments = () => {
   };
 
   const getDoctorCount = (departmentId) => {
-    return doctors.filter(
-      (d) => d.departmentId === departmentId.toString()
+return doctors.filter(
+      (d) => (d.department_id_c?.Id || d.department_id_c) === parseInt(departmentId)
     ).length;
   };
 
   const getTodayAppointmentCount = (departmentId) => {
-    return appointments.filter(
-      (a) => a.departmentId === departmentId.toString()
+return appointments.filter(
+      (a) => (a.department_id_c?.Id || a.department_id_c) === parseInt(departmentId)
     ).length;
   };
 
   const getHeadDoctorName = (headDoctorId) => {
-    const doctor = doctors.find((d) => d.Id.toString() === headDoctorId.toString());
-    return doctor ? doctor.name : "Not assigned";
+const doctor = doctors.find((d) => d.Id.toString() === headDoctorId.toString());
+    return doctor ? (doctor.name_c || "Not assigned") : "Not assigned";
   };
 
   const departmentIcons = {
@@ -113,28 +113,28 @@ const Departments = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg">
                     <ApperIcon
-                      name={departmentIcons[department.name] || "Building2"}
+name={departmentIcons[department.Name] || "Building2"}
                       className="text-white"
                       size={24}
                     />
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-slate-600">Floor</p>
-                    <p className="text-xl font-bold text-primary">{department.floor}</p>
+<p className="text-xl font-bold text-primary">{department.floor_c}</p>
                   </div>
                 </div>
 
                 <h3 className="text-xl font-bold text-slate-900 mb-2">
-                  {department.name}
+{department.Name}
                 </h3>
-                <p className="text-sm text-slate-600 mb-4">{department.description}</p>
+<p className="text-sm text-slate-600 mb-4">{department.description_c}</p>
 
                 <div className="space-y-3 pt-4 border-t border-slate-200">
                   <div className="flex items-center gap-2 text-sm">
                     <ApperIcon name="UserCheck" size={16} className="text-primary" />
                     <span className="text-slate-600">Head: </span>
                     <span className="font-medium text-slate-900">
-                      {getHeadDoctorName(department.headDoctorId)}
+{getHeadDoctorName(department.head_doctor_id_c?.Id || department.head_doctor_id_c)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -153,7 +153,7 @@ const Departments = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <ApperIcon name="Phone" size={16} />
-                    <span>Ext: {department.extension}</span>
+<span>Ext: {department.extension_c}</span>
                   </div>
                 </div>
               </motion.div>

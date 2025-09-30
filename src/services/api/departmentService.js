@@ -1,46 +1,145 @@
-import departmentsData from "@/services/mockData/departments.json";
+const { ApperClient } = window.ApperSDK;
 
-let departments = [...departmentsData];
-
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const apperClient = new ApperClient({
+  apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+  apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+});
 
 export const departmentService = {
   async getAll() {
-    await delay(300);
-    return [...departments];
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "extension_c"}},
+          {"field": {"name": "head_doctor_id_c"}, "referenceField": {"field": {"Name": "Name"}}}
+        ]
+      };
+      
+      const response = await apperClient.fetchRecords('department_c', params);
+      
+      if (!response?.data?.length) {
+        return [];
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error("apper_info: An error was received in fetching departments. The error is:", error.message);
+      return [];
+    }
   },
 
   async getById(id) {
-    await delay(200);
-    const department = departments.find((d) => d.Id === parseInt(id));
-    if (!department) throw new Error("Department not found");
-    return { ...department };
+    try {
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "floor_c"}},
+          {"field": {"Name": "extension_c"}},
+          {"field": {"name": "head_doctor_id_c"}, "referenceField": {"field": {"Name": "Name"}}}
+        ]
+      };
+      
+      const response = await apperClient.getRecordById('department_c', parseInt(id), params);
+      
+      if (!response?.data) {
+        return null;
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error(`apper_info: An error was received in fetching department ${id}. The error is:`, error.message);
+      return null;
+    }
   },
 
   async create(departmentData) {
-    await delay(400);
-    const maxId = departments.reduce((max, d) => Math.max(max, d.Id), 0);
-    const newDepartment = {
-      ...departmentData,
-      Id: maxId + 1
-    };
-    departments.push(newDepartment);
-    return { ...newDepartment };
+    try {
+      const params = {
+        records: [{
+          Name: departmentData.Name,
+          description_c: departmentData.description_c,
+          floor_c: departmentData.floor_c,
+          extension_c: departmentData.extension_c,
+          head_doctor_id_c: departmentData.head_doctor_id_c ? parseInt(departmentData.head_doctor_id_c) : null
+        }]
+      };
+      
+      const response = await apperClient.createRecord('department_c', params);
+      
+      if (!response.success) {
+        console.error("apper_info: An error was received in creating department. The response body is:", JSON.stringify(response));
+        return null;
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("apper_info: An error was received in creating department. The error is:", error.message);
+      return null;
+    }
   },
 
   async update(id, departmentData) {
-    await delay(350);
-    const index = departments.findIndex((d) => d.Id === parseInt(id));
-    if (index === -1) throw new Error("Department not found");
-    departments[index] = { ...departments[index], ...departmentData };
-    return { ...departments[index] };
+    try {
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          Name: departmentData.Name,
+          description_c: departmentData.description_c,
+          floor_c: departmentData.floor_c,
+          extension_c: departmentData.extension_c,
+          head_doctor_id_c: departmentData.head_doctor_id_c ? parseInt(departmentData.head_doctor_id_c) : null
+        }]
+      };
+      
+      const response = await apperClient.updateRecord('department_c', params);
+      
+      if (!response.success) {
+        console.error("apper_info: An error was received in updating department. The response body is:", JSON.stringify(response));
+        return null;
+      }
+      
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        if (successful.length > 0) {
+          return successful[0].data;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("apper_info: An error was received in updating department. The error is:", error.message);
+      return null;
+    }
   },
 
   async delete(id) {
-    await delay(300);
-    const index = departments.findIndex((d) => d.Id === parseInt(id));
-    if (index === -1) throw new Error("Department not found");
-    departments.splice(index, 1);
-    return { success: true };
+    try {
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+      
+      const response = await apperClient.deleteRecord('department_c', params);
+      
+      if (!response.success) {
+        console.error("apper_info: An error was received in deleting department. The response body is:", JSON.stringify(response));
+        return { success: false };
+      }
+      
+      return { success: true };
+    } catch (error) {
+      console.error("apper_info: An error was received in deleting department. The error is:", error.message);
+      return { success: false };
+    }
   }
 };

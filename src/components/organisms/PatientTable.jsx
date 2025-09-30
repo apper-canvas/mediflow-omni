@@ -46,7 +46,7 @@ const PatientTable = ({ patients, onEdit, onDelete }) => {
                 className="hover:bg-primary/5 transition-colors duration-150"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm font-medium text-primary">#{patient.Id}</span>
+<span className="text-sm font-medium text-primary">#{patient.Id}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-3">
@@ -55,24 +55,24 @@ const PatientTable = ({ patients, onEdit, onDelete }) => {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-slate-900">
-                        {patient.firstName} {patient.lastName}
+{patient.first_name_c} {patient.last_name_c}
                       </p>
-                      <p className="text-xs text-slate-600">{patient.email}</p>
+                      <p className="text-xs text-slate-600">{patient.email_c}</p>
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm text-slate-900">{patient.age} years</span>
+<span className="text-sm text-slate-900">{patient.age_c} years</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm text-slate-900">{patient.phone}</span>
+<span className="text-sm text-slate-900">{patient.phone_c}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge variant="primary">{patient.bloodGroup}</Badge>
+<Badge variant="primary">{patient.blood_group_c}</Badge>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Badge variant={patient.status === "Active" ? "success" : "default"}>
-                    {patient.status}
+<Badge variant={patient.status_c === "Active" ? "success" : "default"}>
+                    {patient.status_c}
                   </Badge>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right">
